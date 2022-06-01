@@ -20,3 +20,13 @@ apfile=`ls -lrth /tmp | grep ankit-http-log | tail -1 | awk '{print $9}'`
 aws s3 \
 cp /tmp/$apfile \
 s3://${s3_bucket}/$apfile
+### to check inventory.html
+
+apinv=`ls -lrth /var/www/html/inventory.html`
+if [ -z $apinv ]
+then
+echo "Log Type  Time Created    Type    Size" > /var/www/html/inventory.html
+fi
+typ=`echo $apfile | awk -F "." '{print $2}'`
+sz=`du $apfile`
+echo "httpd-logs    $dt    $typ   $sz" >> /var/www/html/inventory.html
